@@ -47,6 +47,19 @@
         close() {
             this.socket.close();
         }
+
+        /**
+         * Sends a direct message to another client via the server.
+         * @param {string} targetId - The ID of the client to send the message to.
+         * @param {object} data - The data payload to send.
+         */
+        sendTo(targetId, data) {
+            this.send({
+                type: 'direct_message',
+                targetId: targetId,
+                payload: data
+            });
+        }
     }
 
     // --- High-Level API Functions (private to this closure) ---
@@ -55,13 +68,14 @@
     }
 
     function runChatClient(elementIds) {
-        const { urlInput, connectBtn, status, messages, form, messageInput } = elementIds;
+        const { urlInput, connectBtn, status, messages, form, messageInput, targetIdInput } = elementIds;
         const urlEl = document.getElementById(urlInput);
         const connectEl = document.getElementById(connectBtn);
         const statusEl = document.getElementById(status);
         const messagesEl = document.getElementById(messages);
         const formEl = document.getElementById(form);
         const messageEl = document.getElementById(messageInput);
+        const targetIdEl = document.getElementById(targetIdInput); // Get the new target ID input
         let client;
 
         const setStatus = (text, color) => { statusEl.textContent = `Status: ${text}`; statusEl.style.borderColor = color; };
@@ -95,11 +109,21 @@
         connectEl.addEventListener('click', connectToServer);
         formEl.addEventListener('submit', (e) => {
             e.preventDefault();
-            if (messageEl.value && client) {
-                client.send({ text: messageEl.value });
-                addMessage(`YOU SENT: ${messageEl.value}`);
-                messageEl.value = '';
+            if (!messageEl.value || !client) return;
+
+            const targetId = targetIdEl.value.trim();
+            const message = { text: messageEl.value };
+
+            if (targetId) {
+                // Use the new sendTo function for direct messages
+                client.sendTo(targetId, message);
+                addMessage(`YOU (to ${targetId.substring(0, 8)}...): ${message.text}`);
+            } else {
+                // Fallback to a normal (broadcasted) message
+                client.send(message);
+                addMessage(`YOU (broadcast): ${message.text}`);
             }
+            messageEl.value = '';
         });
         setStatus('Ready', '#6c757d');
     }

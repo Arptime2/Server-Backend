@@ -13,5 +13,6 @@ runChatClient({
     status: 'status',
     messages: 'messages',
     form: 'form',
-    messageInput: 'input'
+    messageInput: 'input',
+    targetIdInput: 'target-id' // Add the new element ID
 });

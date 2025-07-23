@@ -50,15 +50,31 @@ function runChatServer(config = {}) {
 
     relayServer.on('message', (client, message) => {
         log(`[APP] Message from ${client.id}:`, message);
-        // Re-construct the message to ensure a consistent format is broadcasted.
-        const broadcastPayload = {
-            type: 'message',
-            from: client.id,
-            payload: {
-                text: message.text || JSON.stringify(message) // Ensure we get the text content
+
+        // Check if this is a direct message to another client
+        if (message.type === 'direct_message' && message.targetId) {
+            const targetClient = relayServer.getClient(message.targetId);
+            if (targetClient) {
+                // Forward the message to the target client
+                targetClient.send({
+                    type: 'direct_message',
+                    from: client.id,
+                    payload: message.payload
+                });
+                log(`[APP] Relayed direct message from ${client.id} to ${message.targetId}`);
+            } else {
+                log(`[APP] Direct message target not found: ${message.targetId}`);
+                // Optionally, send an error back to the sender
+                client.send({ type: 'error', message: `User ${message.targetId} not found.` });
             }
-        };
-        relayServer.broadcast(broadcastPayload, client.id);
+        } else {
+            // Fallback to the standard broadcast logic
+            relayServer.broadcast({
+                type: 'message',
+                from: client.id,
+                payload: message
+            }, client.id);
+        }
     });
 
     console.log('[APP] Chat server application is running.');

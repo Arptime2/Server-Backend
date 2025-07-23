@@ -167,7 +167,8 @@ client.on('error', (err) => console.error(err));
 
 **Methods**
 
--   `send(data)`: Sends a JSON-serializable object to the server.
+-   `send(data)`: Sends a JSON-serializable object to the server for broadcasting.
+-   `sendTo(targetId, data)`: Sends a direct message to a specific client ID.
 -   `close()`: Closes the connection.
 
 ---
@@ -190,7 +191,7 @@ The server and client exchange data using simple JSON objects. The default chat 
 -   `message`: A standard message from one client to another.
 -   `announcement`: A broadcast message from the server terminal.
 
-When sending a message from the client, the `runChatClient` function wraps the input in a `{ "text": "..." }` object. The server then broadcasts this as the `payload` of a `message` type object.
+When sending a message from the client, the `runChatClient` function wraps the input in a `{ "text": "..." }` object. If a `targetId` is specified, this is sent as a `direct_message` and the server will relay it automatically. Otherwise, it is sent as a standard message for the server to broadcast.
 
 ---
 
