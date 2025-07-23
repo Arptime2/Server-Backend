@@ -86,7 +86,7 @@
             if (client) client.close();
             client = connect(urlEl.value);
             setStatus('Connecting...', '#ffc107');
-            client.on('open', () => { setStatus('Connected', '#28a745'); messageEl.disabled = false; connectEl.textContent = 'Disconnect'; });
+            client.on('open', () => { setStatus('Connected', '#28a745'); messageEl.disabled = false; formEl.querySelector('button').disabled = false; connectEl.textContent = 'Disconnect'; });
             client.on('close', () => { setStatus('Disconnected', '#dc3545'); messageEl.disabled = true; connectEl.textContent = 'Connect'; });
             client.on('error', () => setStatus('Error', '#dc3545'));
             client.on('message', (data) => addMessage(formatMessage(data)));
