@@ -1,5 +1,5 @@
 const path = require('path');
-const  RelayServer  = require('../server/RelayServer');
+const RelayServer = require('../server/RelayServer');
 const { serveStatic } = require('../utils/StaticServer');
 const { createTerminal } = require('../utils/TerminalUI');
 

@@ -96,9 +96,8 @@
         formEl.addEventListener('submit', (e) => {
             e.preventDefault();
             if (messageEl.value && client) {
-                const message = { text: messageEl.value };
-                client.send(message);
-                addMessage(`YOU SENT: ${message.text}`);
+                client.send({ text: messageEl.value });
+                addMessage(`YOU SENT: ${messageEl.value}`);
                 messageEl.value = '';
             }
         });
