@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Chatter</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        #messages { list-style-type: none; padding: 0; margin: 0; border: 1px solid #ccc; height: 300px; overflow-y: scroll; background: #f9f9f9; }
+        #messages li { padding: 8px 12px; border-bottom: 1px solid #eee; }
+        #messages li:nth-child(odd) { background: #fff; }
+        #form { display: flex; margin-top: 10px; }
+        #input { flex-grow: 1; padding: 10px; border: 1px solid #ccc; }
+        #connect-container { margin-bottom: 20px; display: flex; }
+        #server-url { flex-grow: 1; padding: 10px; border: 1px solid #ccc; }
+        button { padding: 10px 15px; border: none; background: #007BFF; color: white; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        #status { margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; background: #eee; }
+    </style>
+</head>
+<body>
+    <h1>Browser Chatter</h1>
+
+    <div id="connect-container">
+        <input id="server-url" autocomplete="off" placeholder="Enter WebSocket URL (e.g., ws://your-ip:8080)" />
+        <button id="connect-btn">Connect</button>
+    </div>
+
+    <div id="status">Status: Disconnected</div>
+
+    <ul id="messages"></ul>
+
+    <form id="form" action="">
+        <input id="input" autocomplete="off" disabled /><button disabled>Send</button>
+    </form>
+
+    <script src="/client.js"></script>
+    <script src="/app.js"></script>
+</body>
+</html>

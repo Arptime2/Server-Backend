@@ -1,0 +1,12 @@
+{
+  "name": "node-relay",
+  "version": "1.0.0",
+  "description": "A simple, dependency-free WebSocket relay library for Node.js.",
+  "main": "index.js",
+  "browser": "client.js",
+  "scripts": {
+    "start:example": "node examples/server-usage.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
