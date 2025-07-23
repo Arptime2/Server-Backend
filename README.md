@@ -108,7 +108,12 @@ Node-Relay provides two levels of API: high-level functions for convenience and 
 
 *   `runChatServer(config)`: The easiest way to get started. It creates a WebSocket server, serves client files, and runs an interactive terminal. It's a fully packaged application. Requires a `config` object with `clientPath` and `clientLibPath`.
 
-*   `createServer(options)`: Creates and starts a `RelayServer` instance.
+#### Core Components & Customization
+
+For more advanced use cases, you can use the lower-level components to build a custom server:
+
+*   `createServer(options)`: Creates and starts a `RelayServer` instance. This is the core of the toolkit.
+    *   `options`: An object with `{ port, host }`.
     *   `options`: An object with `{ port, host }`.
 
 *   `createTerminal(relayServer)`: Attaches a powerful interactive command-line interface to any `RelayServer` instance.
