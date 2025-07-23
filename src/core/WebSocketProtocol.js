@@ -90,5 +90,6 @@ function parseMessage(buffer) {
     }
 
     return { message, remainingBuffer };
+}
 
 module.exports = { handleUpgrade, createFrame, parseMessage };
