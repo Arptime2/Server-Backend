@@ -96,6 +96,10 @@ This will start the WebSocket server, the static file server for the client, and
 
 You can now open `http://localhost:8081` in your browser to use the chat client.
 
+
+
+Or just use this url to create a new instance of an example client without a server: https://arptime2.github.io/Server-Backend/
+
 ---
 
 ## API Reference
