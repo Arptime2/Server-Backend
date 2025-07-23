@@ -13,7 +13,7 @@ class RelayServer extends EventEmitter {
 
         this.server.on('upgrade', (req, socket, head) => {
             handleUpgrade(req, socket, (ws) => {
-                this.addClient(ws);
+                this._handleClientConnection(ws);
             });
         });
 
@@ -21,16 +21,9 @@ class RelayServer extends EventEmitter {
         this.server.listen(port, host);
     }
 
-    addClient(socket) {
-        const clientId = crypto.randomBytes(16).toString('hex');
-        this.clients.set(clientId, socket);
-
-        const client = {
-            id: clientId,
-            socket: socket,
-            send: (data) => this.send(socket, data)
-        };
-
+    _handleClientConnection(socket) {
+        const client = this._createClientObject(socket);
+        this.clients.set(client.id, socket);
         this.emit('connection', client);
 
         let buffer = Buffer.alloc(0);
@@ -47,15 +40,24 @@ class RelayServer extends EventEmitter {
         });
 
         socket.on('close', () => {
-            this.clients.delete(clientId);
+            this.clients.delete(client.id);
             this.emit('disconnection', client);
         });
 
         socket.on('error', (err) => {
-            console.error(`Error on socket ${clientId}:`, err);
-            this.clients.delete(clientId);
+            console.error(`Error on socket ${client.id}:`, err);
+            this.clients.delete(client.id);
             this.emit('disconnection', client);
         });
+    }
+
+    _createClientObject(socket) {
+        const clientId = crypto.randomBytes(16).toString('hex');
+        return {
+            id: clientId,
+            socket: socket,
+            send: (data) => this.send(socket, data)
+        };
     }
 
     send(socket, data) {

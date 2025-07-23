@@ -85,6 +85,7 @@
                 case 'welcome': return `SYSTEM: ${data.message}`;
                 case 'presence': return `SYSTEM: Client ${data.id.substring(0, 8)}... went ${data.status}`;
                 case 'announcement': return `ANNOUNCEMENT: ${data.message}`;
+                case 'direct_message': return `DM from ${data.from.substring(0, 8)}...: ${data.payload.text}`;
                 case 'message': 
                     // Check for a .text property in the payload for cleaner display
                     if (data.payload && typeof data.payload === 'object' && data.payload.text) {
