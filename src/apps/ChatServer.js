@@ -17,7 +17,8 @@ function runChatServer(config = {}) {
         websocketPort = 8080, 
         httpPort = 8081, 
         clientPath, 
-        clientLibPath 
+        clientLibPath,
+        enableTerminal = true // Add a flag to control the terminal
     } = config;
 
     // 1. Create the Relay Server
@@ -28,8 +29,12 @@ function runChatServer(config = {}) {
         serveStatic(httpPort, clientPath, clientLibPath);
     }
 
-    // 3. Create an interactive terminal for managing the server
-    const { log } = createTerminal(relayServer);
+    // 3. Conditionally create an interactive terminal
+    let log = console.log; // Default to console.log
+    if (enableTerminal) {
+        const terminal = createTerminal(relayServer);
+        log = terminal.log; // Use the terminal's log function if it's running
+    }
 
     // 4. Add the standard chat application logic
     relayServer.on('connection', (client) => {

@@ -9,5 +9,6 @@ const { runChatServer } = require('../index');
 // Run the entire pre-packaged chat server application.
 runChatServer({
     clientPath: path.join(__dirname, 'browser-chatter'),
-    clientLibPath: path.resolve(__dirname, '..', 'client.js')
+    clientLibPath: path.resolve(__dirname, '..', 'client.js'),
+    enableTerminal: true // Explicitly enable the terminal UI
 });
