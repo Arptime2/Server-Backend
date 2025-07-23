@@ -26,10 +26,14 @@ Create a file named `server.js`:
 
 ```javascript
 // server.js
+const path = require('path');
 const { runChatServer } = require('./node-relay'); // Assuming node-relay is in a subfolder
 
-// That's it. This one function runs a complete chat server.
-runChatServer();
+// This one function runs a complete chat server with the client example.
+runChatServer({
+    clientPath: path.join(__dirname, 'browser-chatter'), // Path to the client's HTML/JS
+    clientLibPath: path.resolve(__dirname, 'node-relay', 'client.js')
+});
 ```
 
 ### 2. Client Code
@@ -102,7 +106,7 @@ Node-Relay provides two levels of API: high-level functions for convenience and 
 
 #### High-Level Functions
 
-*   `runChatServer()`: The easiest way to get started. It creates a WebSocket server, serves client files, and runs an interactive terminal. It's a fully packaged application.
+*   `runChatServer(config)`: The easiest way to get started. It creates a WebSocket server, serves client files, and runs an interactive terminal. It's a fully packaged application. Requires a `config` object with `clientPath` and `clientLibPath`.
 
 *   `createServer(options)`: Creates and starts a `RelayServer` instance.
     *   `options`: An object with `{ port, host }`.
