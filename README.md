@@ -68,6 +68,32 @@ From your terminal, run `node server.js` and open `index.html` in your browser. 
 
 ---
 
+## Running the Included Example
+
+To run the full-featured example application included in this repository:
+
+1.  **Clone the repository:**
+    ```bash
+    git clone <repository-url>
+    cd node-relay
+    ```
+
+2.  **Install dependencies (there are none, but this is good practice):**
+    ```bash
+    npm install
+    ```
+
+3.  **Run the example script:**
+    ```bash
+    npm run start:example
+    ```
+
+This will start the WebSocket server, the static file server for the client, and the interactive terminal UI.
+
+You can now open `http://localhost:8081` in your browser to use the chat client.
+
+---
+
 ## API Reference
 
 Node-Relay provides two levels of API: high-level functions for convenience and core classes for customization.
