@@ -44,6 +44,12 @@ function createFrame(payload) {
 }
 
 function parseMessage(buffer) {
+    // A WebSocket frame must have at least 2 bytes for the header.
+    // If we don't have enough data, wait for more.
+    if (buffer.length < 2) {
+        return null;
+    }
+
     const firstByte = buffer.readUInt8(0);
     const opCode = firstByte & 0x0f;
 
