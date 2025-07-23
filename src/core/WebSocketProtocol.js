@@ -66,7 +66,7 @@ function parseMessage(buffer) {
 
     const maskingKey = isMasked ? buffer.slice(maskOffset, maskOffset + 4) : null;
     const payloadOffset = maskOffset + (isMasked ? 4 : 0);
-    const payload = buffer.slice(payloadOffset);
+    const payload = buffer.slice(payloadOffset, payloadOffset + payloadLength);
 
     if (isMasked) {
         for (let i = 0; i < payload.length; i++) {
