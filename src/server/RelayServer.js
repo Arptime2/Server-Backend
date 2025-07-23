@@ -33,10 +33,16 @@ class RelayServer extends EventEmitter {
 
         this.emit('connection', client);
 
-        socket.on('data', (buffer) => {
-            const message = parseMessage(buffer);
-            if (message) {
-                this.emit('message', client, message);
+        let buffer = Buffer.alloc(0);
+        socket.on('data', (chunk) => {
+            buffer = Buffer.concat([buffer, chunk]);
+            let result;
+            while ((result = parseMessage(buffer)) !== null) {
+                const { message, remainingBuffer } = result;
+                if (message) {
+                    this.emit('message', client, message);
+                }
+                buffer = remainingBuffer;
             }
         });
 

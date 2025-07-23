@@ -66,19 +66,29 @@ function parseMessage(buffer) {
 
     const maskingKey = isMasked ? buffer.slice(maskOffset, maskOffset + 4) : null;
     const payloadOffset = maskOffset + (isMasked ? 4 : 0);
-    const payload = buffer.slice(payloadOffset, payloadOffset + payloadLength);
+    const frameLength = payloadOffset + payloadLength;
+
+    // Not enough data in the buffer for a complete frame. Wait for more.
+    if (buffer.length < frameLength) {
+        return null;
+    }
+
+    const payload = buffer.slice(payloadOffset, frameLength);
+    const remainingBuffer = buffer.slice(frameLength);
 
     if (isMasked) {
         for (let i = 0; i < payload.length; i++) {
             payload[i] = payload[i] ^ maskingKey[i % 4];
         }
     }
-    
+
+    let message;
     try {
-        return JSON.parse(payload.toString());
+        message = JSON.parse(payload.toString());
     } catch (e) {
-        return payload.toString();
+        message = payload.toString();
     }
-}
+
+    return { message, remainingBuffer };
 
 module.exports = { handleUpgrade, createFrame, parseMessage };
