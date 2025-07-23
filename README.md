@@ -172,6 +172,28 @@ client.on('error', (err) => console.error(err));
 
 ---
 
+## Data Structures
+
+The server and client exchange data using simple JSON objects. The default chat application uses the following structure:
+
+```json
+{
+  "type": "message_type",
+  "payload": { ... }
+}
+```
+
+**Common Message Types:**
+
+-   `welcome`: Sent from server to a new client.
+-   `presence`: Sent from server to all clients when someone connects or disconnects.
+-   `message`: A standard message from one client to another.
+-   `announcement`: A broadcast message from the server terminal.
+
+When sending a message from the client, the `runChatClient` function wraps the input in a `{ "text": "..." }` object. The server then broadcasts this as the `payload` of a `message` type object.
+
+---
+
 ## License
 
 This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.

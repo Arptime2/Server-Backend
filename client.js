@@ -71,7 +71,13 @@
                 case 'welcome': return `SYSTEM: ${data.message}`;
                 case 'presence': return `SYSTEM: Client ${data.id.substring(0, 8)}... went ${data.status}`;
                 case 'announcement': return `ANNOUNCEMENT: ${data.message}`;
-                case 'message': return `MSG from ${data.from.substring(0, 8)}...: ${JSON.stringify(data.payload)}`;
+                case 'message': 
+                    // Check for a .text property in the payload for cleaner display
+                    if (data.payload && typeof data.payload === 'object' && data.payload.text) {
+                        return `MSG from ${data.from.substring(0, 8)}...: ${data.payload.text}`;
+                    }
+                    // Fallback for other structures
+                    return `MSG from ${data.from.substring(0, 8)}...: ${JSON.stringify(data.payload)}`;
                 default: return `RECEIVED: ${JSON.stringify(data)}`;
             }
         };
