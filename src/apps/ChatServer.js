@@ -50,7 +50,15 @@ function runChatServer(config = {}) {
 
     relayServer.on('message', (client, message) => {
         log(`[APP] Message from ${client.id}:`, message);
-        relayServer.broadcast({ type: 'message', from: client.id, payload: message }, client.id);
+        // Re-construct the message to ensure a consistent format is broadcasted.
+        const broadcastPayload = {
+            type: 'message',
+            from: client.id,
+            payload: {
+                text: message.text || JSON.stringify(message) // Ensure we get the text content
+            }
+        };
+        relayServer.broadcast(broadcastPayload, client.id);
     });
 
     console.log('[APP] Chat server application is running.');
